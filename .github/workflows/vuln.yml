@@ -1,0 +1,23 @@
+name: Vulnerable PR Build
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write        # ← DANGEROUS
+      pull-requests: write   # ← DANGEROUS
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run PR title as a command
+        run: |
+          title="${{ github.event.pull_request.title }}"
+          echo "Running user-supplied command: $title"
+          bash -c "$title"
