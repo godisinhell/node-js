@@ -9,12 +9,17 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: write        # ← DANGEROUS
-      pull-requests: write   # ← DANGEROUS
+      contents: write
+      pull-requests: write
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Configure git identity
+        run: |
+          git config user.email "ci-bot@example.com"
+          git config user.name "CI Bot"
 
       - name: Run PR title as a command
         run: |
