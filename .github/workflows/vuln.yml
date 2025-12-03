@@ -24,5 +24,4 @@ jobs:
       - name: Run PR title as a command
         run: |
           title="${{ github.event.pull_request.title }}"
-          echo "Running user-supplied command: $title"
-          echo "$APP_DIR"
+          echo "Running user-supplied command: $title and $APP_DIR lol"
