@@ -1,0 +1,32 @@
+name: Vulnerable Test CI
+
+on:
+  pull_request_target:
+    types: [opened, synchronize]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write      # dangerous
+      id-token: write      # dangerous if cloud OIDC is used
+      pull-requests: write
+
+    steps:
+      - name: Checkout attacker PR code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
+
+      - name: Use secret
+        env:
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+        run: |
+          echo "deploying with key: $DEPLOY_KEY"
